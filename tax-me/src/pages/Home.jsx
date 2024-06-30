@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-wrap justify-center flex-col items-center text-center h-screen">
       <div>
@@ -18,6 +21,7 @@ function Home() {
         <button
           type="button"
           className="font-display text-gray-900 bg-gray-800 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 btn-width"
+          onClick={() => navigate("/guest-cart")}
         >
           <b>Start a Cart</b>
         </button>
