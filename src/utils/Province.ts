@@ -1,0 +1,15 @@
+export enum Province {
+  BC,
+  AB,
+  SK,
+  MB,
+  ON,
+  QC,
+  NS,
+  PEI,
+  NB,
+  NL,
+  YT,
+  NT,
+  NU,
+}
