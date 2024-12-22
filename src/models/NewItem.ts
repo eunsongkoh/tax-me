@@ -1,9 +1,10 @@
-import { taxRates } from "@/utils/itemType";
+import { ItemType } from "@/utils/ItemType";
+import { TaxRates } from "@/utils/TaxRate";
 
-interface NewItem {
+export interface NewItem {
   price: number;
   obj_name: string;
   quantity: number;
-  itemType: keyof typeof taxRates;
-  taxRate: number;
+  itemType: keyof typeof ItemType;
+  taxRate: typeof TaxRates;
 }
