@@ -5,6 +5,7 @@ export interface NewItem {
   price: number;
   obj_name: string;
   quantity: number;
-  itemType: keyof typeof ItemType;
-  taxRate: typeof TaxRates;
+  itemType: ItemType;
+  taxRate: keyof typeof TaxRates;
+  id: number;
 }
