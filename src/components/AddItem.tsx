@@ -1,74 +1,144 @@
+"use client";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Form,
+  Input,
+  Select,
+  Image,
+  SelectSection,
+  SelectItem,
+} from "@nextui-org/react";
+import { useState } from "react";
+import Webcam from "react-webcam";
+
 export default function AddItem() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isPhotoOpen,
+    onOpen: onPhotoOpen,
+    onOpenChange: onPhotoChange,
+  } = useDisclosure();
+
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageFile(file);
+        setPhoto(reader.result as string); // Store the uploaded image
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCapture = (getScreenshot: () => string | null) => {
+    const imageSrc = getScreenshot();
+    setPhoto(imageSrc); // Store the captured photo
+  };
+
   return (
     <>
-      <div className="border-solid border-2">
-        <h2>Successful Photo Scan</h2>
-        <h3>Price: {}</h3>
+      <Button onPress={onOpen}>Add New Item</Button>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Add Item
+              </ModalHeader>
+              <ModalBody>
+                <Button onPress={onPhotoChange}>
+                  {isPhotoOpen ? "Cancel Photo" : "Take a Photo"}
+                </Button>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  label="Upload an Image"
+                  onChange={handleImageUpload}
+                />
+                {isPhotoOpen && (
+                  <Webcam
+                    audio={false}
+                    screenshotFormat="image/jpeg"
+                    width="100%"
+                    videoConstraints={{
+                      facingMode: "user",
+                    }}
+                  >
+                    {({ getScreenshot }) => (
+                      <div>
+                        <Button onPress={() => handleCapture(getScreenshot)}>
+                          Capture Photo
+                        </Button>
+                      </div>
+                    )}
+                  </Webcam>
+                )}
 
-        <form className="max-w-sm mx-auto">
-          <label
-            htmlFor="itemType"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Select Item Type
-          </label>
-          <select
-            id="itemType"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option defaultValue="Produce">Select Item Type</option>
-            <option value="1">Produce</option>
-            <option value="2">Alcoholic Beverages</option>
-            <option value="3">Carbonated drinks, candies, snack foods</option>
-            <option value="4">Prepared Foods</option>
-          </select>
-
-          <div>
-            <label
-              htmlFor="quantity"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Quantity
-            </label>
-            <input
-              type="number"
-              id="quantity"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="3"
-              required
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="objName"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Item Name
-            </label>
-            <input
-              type="text"
-              id="objName"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Cheese"
-              required
-            />
-          </div>
-
-          <button
-            type="button"
-            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >
-            Add
-          </button>
-          <button
-            type="button"
-            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >
-            Cancel
-          </button>
-        </form>
-      </div>
+                {photo && (
+                  <div>
+                    <Image
+                      src={photo}
+                      alt="Captured Photo"
+                      style={{ width: "100%", maxWidth: "400px" }}
+                    />
+                  </div>
+                )}
+                <Form className="w-full max-w-xs flex flex-col gap-4">
+                  <Input
+                    errorMessage="Please Enter the Item Price"
+                    label="Price"
+                    name="price"
+                    placeholder="1.99"
+                    type="number"
+                  />
+                  <Select className="max-w-xs" label="Select an Item Type">
+                    <SelectItem key="1">Produce</SelectItem>
+                    <SelectItem key="2">Alcoholic Beverages</SelectItem>
+                    <SelectItem key="3">
+                      Carbonated drinks, candies, snack foods
+                    </SelectItem>
+                    <SelectItem key="4">Prepared Foods</SelectItem>
+                  </Select>
+                  <Input
+                    isRequired
+                    errorMessage="Please Enter an Item Name"
+                    label="Item Name"
+                    name="itemName"
+                    placeholder="Cheese"
+                    type="text"
+                  ></Input>
+                  <Input
+                    isRequired
+                    errorMessage="Please Enter a Quantity"
+                    label="Quantity"
+                    name="itemQuantity"
+                    placeholder="3"
+                    type="number"
+                  />
+                </Form>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Add
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 }

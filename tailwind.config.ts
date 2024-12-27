@@ -1,6 +1,10 @@
+import { nextui } from "@nextui-org/theme";
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -11,5 +15,12 @@ module.exports = {
       display: ["Archivo Narrow"],
     },
   },
-  plugins: [],
+  darkMode: "class",
+  plugins: [
+    nextui({
+      prefix: "nextui",
+      defaultTheme: "dark",
+      defaultExtendTheme: "dark",
+    }),
+  ],
 };
