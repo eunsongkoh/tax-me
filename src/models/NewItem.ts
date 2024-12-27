@@ -1,5 +1,5 @@
-import { ItemType } from "@/utils/ItemType";
-import { TaxRates } from "@/utils/TaxRate";
+import { ItemType } from "@/types/ItemType";
+import { TaxRates } from "@/types/TaxRate";
 
 export interface NewItem {
   price: number;

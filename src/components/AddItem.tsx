@@ -1,4 +1,5 @@
 "use client";
+import { useAddItem } from "@/utils/ModifyItems";
 import {
   Modal,
   ModalContent,
@@ -18,6 +19,7 @@ import { useState } from "react";
 import Webcam from "react-webcam";
 
 export default function AddItem() {
+  const { addNewItem } = useAddItem();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isPhotoOpen,
@@ -28,13 +30,14 @@ export default function AddItem() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  // temp, get rid of later once implemented API
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageFile(file);
-        setPhoto(reader.result as string); // Store the uploaded image
+        setPhoto(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -42,7 +45,22 @@ export default function AddItem() {
 
   const handleCapture = (getScreenshot: () => string | null) => {
     const imageSrc = getScreenshot();
-    setPhoto(imageSrc); // Store the captured photo
+    setPhoto(imageSrc);
+  };
+
+  // on form submit
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    if (data.itemType && data.itemName && data.price && data.itemQuantity) {
+      const price = parseInt(data.price as string);
+      const quantity = parseInt(data.itemQuantity as string);
+      const itemType = parseInt(data.itemType as string);
+      addNewItem(price, data.itemName as string, quantity, itemType);
+    }
   };
 
   return (
@@ -93,7 +111,11 @@ export default function AddItem() {
                     />
                   </div>
                 )}
-                <Form className="w-full max-w-xs flex flex-col gap-4">
+                <Form
+                  className="w-full max-w-xs flex flex-col gap-4"
+                  validationBehavior="native"
+                  onSubmit={onSubmit}
+                >
                   <Input
                     errorMessage="Please Enter the Item Price"
                     label="Price"
@@ -101,7 +123,11 @@ export default function AddItem() {
                     placeholder="1.99"
                     type="number"
                   />
-                  <Select className="max-w-xs" label="Select an Item Type">
+                  <Select
+                    className="max-w-xs"
+                    label="Select an Item Type"
+                    name="itemType"
+                  >
                     <SelectItem key="1">Produce</SelectItem>
                     <SelectItem key="2">Alcoholic Beverages</SelectItem>
                     <SelectItem key="3">
@@ -124,17 +150,27 @@ export default function AddItem() {
                     name="itemQuantity"
                     placeholder="3"
                     type="number"
+                    validate={(value) => {
+                      if (value <= 0) {
+                        return "Quantity Cannot be less than or equal to 0";
+                      }
+                    }}
                   />
+                  <div className="flex gap-2">
+                    <Button color="primary" type="submit" onPress={onClose}>
+                      Submit
+                    </Button>
+                    <Button
+                      color="danger"
+                      type="reset"
+                      variant="flat"
+                      onPress={onClose}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
                 </Form>
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Add
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>

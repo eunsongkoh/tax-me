@@ -1,10 +1,11 @@
 import { NewItem } from "@/models/NewItem";
-import { ItemType } from "@/utils/ItemType";
-import { TaxRates } from "@/utils/TaxRate";
+import { ItemType } from "@/types/ItemType";
+import { TaxRates } from "@/types/TaxRate";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ItemState {
   items: NewItem[];
+  itemId: number;
 }
 
 const initialState: ItemState = {
@@ -26,6 +27,8 @@ const initialState: ItemState = {
       id: 2345,
     },
   ]),
+  // should change this to whatever our API returns
+  itemId: 0,
 };
 
 const itemSlice = createSlice({
@@ -38,8 +41,11 @@ const itemSlice = createSlice({
     removeItem: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+    incrementId: (state) => {
+      state.itemId += 1;
+    },
   },
 });
 
-export const { addItem, removeItem } = itemSlice.actions;
+export const { addItem, removeItem, incrementId } = itemSlice.actions;
 export default itemSlice.reducer;
