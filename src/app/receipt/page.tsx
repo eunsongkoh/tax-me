@@ -1,3 +1,4 @@
+"use client";
 import AddItem from "@/components/AddItem";
 // import AddItemOptions from "@/components/AddItemOptions";
 
