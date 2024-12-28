@@ -22,7 +22,7 @@ export function useAddItem() {
       quantity,
       itemType,
       taxRate,
-      id: 7890,
+      id: Date.now(),
     };
 
     dispatch(addItem(newItem));

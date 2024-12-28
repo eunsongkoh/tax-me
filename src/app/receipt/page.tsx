@@ -8,11 +8,8 @@ export default function Receipt() {
   return (
     <>
       <div className="container mx-auto border-2">
-        <ReceiptList />
-        <span>
-          <h2>Total: {}</h2>
-        </span>
         <AddItem />
+        <ReceiptList />
       </div>
     </>
   );
