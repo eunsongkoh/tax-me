@@ -3,7 +3,7 @@ import counterReducer from "./features/counter/counterSlice";
 import itemReducer from "./features/items/itemSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-// import storage from "redux-persist/lib/storage";
+import userReducer from "./features/user/userSlice";
 
 const createNoopStorage = () => {
   return {
@@ -27,12 +27,13 @@ const storageConfig =
 const persistConfig = {
   key: "root",
   storage: storageConfig,
-  whitelist: ["counter", "items"],
+  whitelist: ["counter", "items", "user"],
 };
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   items: itemReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

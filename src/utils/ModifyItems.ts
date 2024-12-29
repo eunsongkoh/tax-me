@@ -1,9 +1,7 @@
 import { NewItem } from "@/models/NewItem";
-import { ItemType } from "@/types/ItemType";
 import { TaxRates } from "@/types/TaxRate";
 import { useAppDispatch } from "@/app/hooks";
 import { addItem, removeItem } from "@/app/lib/features/items/itemSlice";
-import { persistor } from "@/app/lib/store";
 
 export function useAddItem() {
   const dispatch = useAppDispatch();

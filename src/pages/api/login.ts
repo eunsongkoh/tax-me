@@ -5,10 +5,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
 
     const hashify = process.env.HASH_API;
-    const userServer = process.env.USER_SERVER_ENDPOINT;
+    const userServer = process.env.USER_LOGIN_ENDPOINT;
 
     if (!hashify || !userServer) {
       return res.status(500).json({ error: "Missing environment variables" });
@@ -20,16 +20,14 @@ export default async function handler(
 
       if (!hashResponse.ok) {
         const errorData = await hashResponse.json();
-        return res
-          .status(hashResponse.status)
-          .json({ error: errorData.message || "Failed to hash password" });
+        return res.status(hashResponse.status).json({
+          error: errorData.message || "Failed to hash password",
+        });
       }
 
       const hashedPass = await hashResponse.json();
-
-      const newUser = {
+      const userInfo = {
         userName: username,
-        email: email,
         passwordHash: hashedPass.Digest,
       };
 
@@ -38,7 +36,7 @@ export default async function handler(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify(userInfo),
       });
 
       const data = await response.json();
@@ -46,11 +44,11 @@ export default async function handler(
       if (response.ok) {
         return res
           .status(200)
-          .json({ message: "User created successfully!", data });
+          .json({ message: "User Successfully Logged In!", data });
       } else {
         return res
           .status(response.status)
-          .json({ error: data.message || "Error creating user" });
+          .json({ error: data.message || "Error Logging In" });
       }
     } catch (error) {
       console.error("Error:", error);
