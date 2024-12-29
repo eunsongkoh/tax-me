@@ -4,6 +4,7 @@ import { Form, Input, Button } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 export default function SignIn() {
   const [action, setAction] = useState(null);
@@ -42,10 +43,9 @@ export default function SignIn() {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
 
           // enable the user login state
-          loginUser(result.userId);
+          loginUser(result.data.userId);
 
           router.push("/receipt");
         } else {
@@ -87,7 +87,7 @@ export default function SignIn() {
           console.log(result);
 
           // enable the user login state
-          loginUser(result.userId);
+          loginUser(result.data.userId);
 
           router.push("/receipt");
         } else {
@@ -102,7 +102,7 @@ export default function SignIn() {
 
   return (
     <>
-      <Button color="primary" type="submit" onSubmit={guestMode}>
+      <Button color="primary" type="submit" onPress={guestMode}>
         Guest Mode
       </Button>
       <Accordion>

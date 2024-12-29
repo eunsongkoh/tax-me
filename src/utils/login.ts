@@ -5,6 +5,7 @@ export function useLogUser() {
   const dispatch = useAppDispatch();
 
   const loginUser = (id: number) => {
+    console.log("The ID: " + id);
     const userData = {
       userId: id,
       purchases: [],

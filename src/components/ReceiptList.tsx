@@ -4,6 +4,9 @@ import { Button } from "@nextui-org/button";
 
 export default function ReceiptList() {
   const items = useAppSelector((state) => state.items.items);
+  const userId = useAppSelector((state) => state.user.userId);
+  const userData = useAppSelector((state) => state.user);
+  console.log(userData);
 
   const total = items.reduce((accumulator, item) => {
     const taxMultiplier = item.taxRate / 100;
@@ -24,6 +27,48 @@ export default function ReceiptList() {
     );
   });
 
+  const totalItems: { price: string; itemName: string }[] = [];
+  const checkout = async () => {
+    // need to collect all the items and put them all together
+    for (const item of items) {
+      const tempItem = {
+        price: item.price.toFixed(2),
+        itemName: item.obj_name,
+      };
+
+      totalItems.push(tempItem);
+    }
+
+    // make a call to the checkout api
+    try {
+      const checkoutRq = {
+        userId: userId,
+        items: totalItems,
+        total: total.toFixed(2),
+      };
+
+      console.log("Making a Call to the Checkout API", checkoutRq);
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(checkoutRq),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+      } else {
+        const error = await response.json();
+        console.log(error.errorMessage || "Failed Creating a New Purchase");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
+
   return (
     <>
       <div className="columns-3">
@@ -33,7 +78,7 @@ export default function ReceiptList() {
       </div>
       <div className="">{renderedItems}</div>
       <div>Total: ${total.toFixed(2)}</div>
-      <Button>Checkout</Button>
+      <Button onPress={checkout}>Checkout</Button>
     </>
   );
 }
