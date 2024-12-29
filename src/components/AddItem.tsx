@@ -1,19 +1,17 @@
 "use client";
 import { useAddItem } from "@/utils/ModifyItems";
 import {
+  Button,
+  Form,
+  Image,
+  Input,
   Modal,
+  ModalBody,
   ModalContent,
   ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Form,
-  Input,
   Select,
-  Image,
-  SelectSection,
   SelectItem,
+  useDisclosure,
 } from "@nextui-org/react";
 import { useState } from "react";
 import Webcam from "react-webcam";
@@ -151,7 +149,7 @@ export default function AddItem() {
                     placeholder="3"
                     type="number"
                     validate={(value) => {
-                      if (value <= 0) {
+                      if (parseInt(value) <= 0) {
                         return "Quantity Cannot be less than or equal to 0";
                       }
                     }}

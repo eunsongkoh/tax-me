@@ -1,7 +1,11 @@
 import { NewItem } from "@/models/NewItem";
 import { TaxRates } from "@/types/TaxRate";
 import { useAppDispatch } from "@/app/hooks";
-import { addItem, removeItem } from "@/app/lib/features/items/itemSlice";
+import {
+  addItem,
+  clearItems,
+  removeItem,
+} from "@/app/lib/features/items/itemSlice";
 
 export function useAddItem() {
   const dispatch = useAppDispatch();
@@ -27,6 +31,16 @@ export function useAddItem() {
   };
 
   return { addNewItem };
+}
+
+export function useClearItems() {
+  const dispatch = useAppDispatch();
+
+  const clearAllItems = () => {
+    dispatch(clearItems());
+  };
+
+  return { clearAllItems };
 }
 
 export function RemoveItem(_id: number) {

@@ -44,8 +44,14 @@ const itemSlice = createSlice({
     incrementId: (state) => {
       state.itemId += 1;
     },
+    clearItems: (state) => {
+      return {
+        ...state,
+        items: [], 
+      };
+    },
   },
 });
 
-export const { addItem, removeItem, incrementId } = itemSlice.actions;
+export const { addItem, removeItem, incrementId, clearItems } = itemSlice.actions;
 export default itemSlice.reducer;

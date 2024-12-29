@@ -45,7 +45,7 @@ export default function SignIn() {
           const result = await response.json();
 
           // enable the user login state
-          loginUser(result.data.userId);
+          loginUser(result.data.userId, result.data.purchases);
 
           router.push("/receipt");
         } else {
@@ -87,7 +87,7 @@ export default function SignIn() {
           console.log(result);
 
           // enable the user login state
-          loginUser(result.data.userId);
+          loginUser(result.data.userId, result.data.purchases);
 
           router.push("/receipt");
         } else {

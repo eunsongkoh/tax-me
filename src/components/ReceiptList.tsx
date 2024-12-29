@@ -1,8 +1,10 @@
 "use client";
 import { useAppSelector } from "@/app/hooks";
+import { useClearItems } from "@/utils/ModifyItems";
 import { Button } from "@nextui-org/button";
 
 export default function ReceiptList() {
+  const { clearAllItems } = useClearItems();
   const items = useAppSelector((state) => state.items.items);
   const userId = useAppSelector((state) => state.user.userId);
   const userData = useAppSelector((state) => state.user);
@@ -34,6 +36,7 @@ export default function ReceiptList() {
       const tempItem = {
         price: item.price.toFixed(2),
         itemName: item.obj_name,
+        quantity: item.quantity,
       };
 
       totalItems.push(tempItem);
@@ -44,7 +47,7 @@ export default function ReceiptList() {
       const checkoutRq = {
         userId: userId,
         items: totalItems,
-        total: total.toFixed(2),
+        total: parseFloat(total.toFixed(2)),
       };
 
       console.log("Making a Call to the Checkout API", checkoutRq);
@@ -60,6 +63,9 @@ export default function ReceiptList() {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
+
+        // clear the cart
+        clearAllItems();
       } else {
         const error = await response.json();
         console.log(error.errorMessage || "Failed Creating a New Purchase");
