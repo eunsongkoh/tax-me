@@ -11,7 +11,9 @@ export default function UpdateBudget() {
   };
   return (
     <>
-      <p className="font-bold text-2xl pb-5">Welcome {userData.userName}</p>
+      <p className="font-bold text-2xl pb-5">
+        Welcome <span className="underline">{userData.userName}</span>
+      </p>
       <p className="text-xl pt-2">Your Current Budget</p>
       {/* <p className="font-sm text-default-600">Change Budget</p> */}
       <BudgetProgress />

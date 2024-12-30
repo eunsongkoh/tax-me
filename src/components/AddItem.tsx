@@ -63,7 +63,9 @@ export default function AddItem() {
 
   return (
     <>
-      <Button onPress={onOpen}>Add New Item</Button>
+      <Button onPress={onOpen} variant="shadow">
+        Add New Item
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (

@@ -131,11 +131,12 @@ export default function ReceiptList() {
       </div>
       <div className="flex flex-col items-end mt-auto mb-5">
         <div className="text-right mb-1">
-          <p>Total: ${total.toFixed(2)}</p>
+          <p className="text-lg">Total: ${total.toFixed(2)}</p>
         </div>
         <Button
           onPress={checkout}
           className="transition-transform bg-gradient-to-r from-green-500 to-green-900"
+          variant="shadow"
         >
           Checkout
         </Button>
