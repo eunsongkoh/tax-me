@@ -31,15 +31,17 @@ export default function Nav() {
   };
 
   return (
-    <Navbar>
+    <Navbar className="bg-0a0a0a">
       <NavbarBrand>
-        <p className="font-bold text-inherit">taxMe</p>
+        <Link color="foreground" href="/">
+          <p className="font-bold text-xl text-inherit">taxMe</p>
+        </Link>
       </NavbarBrand>
 
       <NavbarContent as="div" justify="end">
         <NavbarItem>
           <Link color="foreground" href="/receipt">
-            Cart
+            <p className="text-lg">Cart</p>
           </Link>
         </NavbarItem>
         <Dropdown placement="bottom-end">
@@ -47,8 +49,8 @@ export default function Nav() {
             <Avatar
               isBordered
               as="button"
-              className="transition-transform"
-              color="secondary"
+              className="transition-transform bg-gradient-to-r from-stone-500 to-pink-500"
+              color="default"
               name=""
               size="sm"
               aria-label="User profile"

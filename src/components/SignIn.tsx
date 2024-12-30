@@ -3,15 +3,28 @@ import { useLogUser } from "@/utils/login";
 import {
   Accordion,
   AccordionItem,
+  Alert,
   Button,
   Form,
   Input,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function SignIn() {
   const { loginUser, logoutUser } = useLogUser();
   const router = useRouter();
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertColor, setAlertColor] = useState("secondary");
+
+  const showAlert = (message: string, color: string = "secondary") => {
+    setAlertMessage(message);
+    setAlertColor(color);
+    setAlertVisible(true);
+    setTimeout(() => setAlertVisible(false), 5000); // Automatically hide after 5 seconds
+  };
 
   const guestMode = () => {
     router.push("/receipt");
@@ -47,11 +60,27 @@ export default function SignIn() {
           const result = await response.json();
 
           // enable the user login state
-          loginUser(result.data.userId, result.data.purchases, username);
+          loginUser(
+            result.data.userId,
+            result.data.purchases,
+            username,
+            result.data.budget
+          );
 
           router.push("/receipt");
         } else {
           const error = await response.json();
+          console.log(error);
+          console.log(response);
+          if (response.status == 420) {
+            // same username
+            showAlert("This username is already taken", "secondary");
+          } else if (response.status == 421) {
+            // same email
+            showAlert("This email is already in use", "secondary");
+          } else {
+            console.log(error.errorMessage || "Signup Failed");
+          }
           console.log(error.errorMessage || "Signup Failed");
         }
       } catch (error) {
@@ -104,7 +133,23 @@ export default function SignIn() {
 
   return (
     <>
-      <Button color="primary" type="submit" onPress={guestMode}>
+      {alertVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="p-6 rounded shadow-lg max-w-sm text-center">
+            <Alert
+              color={alertColor}
+              title={alertMessage}
+              onClose={() => setAlertVisible(false)}
+            />
+          </div>
+        </div>
+      )}
+      <Button
+        className="bg-gradient-to-tr from-gray-800 to-pink-500 text-white shadow-lg"
+        radius="full"
+        type="submit"
+        onPress={guestMode}
+      >
         Guest Mode
       </Button>
       <Accordion>
@@ -134,7 +179,10 @@ export default function SignIn() {
               type="password"
             />
             <div className="flex gap-2">
-              <Button color="primary" type="submit">
+              <Button
+                className="bg-gradient-to-tr from-gray-800 to-pink-500 text-white shadow-lg"
+                type="submit"
+              >
                 Login
               </Button>
             </div>
@@ -176,7 +224,10 @@ export default function SignIn() {
               type="password"
             />
             <div className="flex gap-2">
-              <Button color="primary" type="submit">
+              <Button
+                className="bg-gradient-to-tr from-gray-800 to-pink-500 text-white shadow-lg"
+                type="submit"
+              >
                 Create
               </Button>
             </div>

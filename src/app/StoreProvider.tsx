@@ -29,7 +29,7 @@ export default function StoreProvider({
   if (!initialized) {
     return (
       <div className="fixed inset-0 flex justify-center items-center z-50">
-        <Spinner color="warning" label="Loading..." />
+        <Spinner color="danger" label="Loading..." />
       </div>
     );
   }

@@ -1,35 +1,13 @@
 "use client";
-import { useAppSelector } from "../hooks";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@nextui-org/react";
+import PurchaseHistory from "@/components/PurchaseHistory";
+import UpdateBudget from "@/components/UpdateBudget";
+import BudgetProgress from "@/components/BudgetProgress";
 
 export default function Dashboard() {
-  const userData = useAppSelector((state) => state.user);
-  const purchaseData: any[] = useAppSelector((state) => state.user.purchases);
-
   return (
-    <>
-      <h1>Welcome {userData.userName}</h1>
-      <Table aria-label="Past Purchase History">
-        <TableHeader>
-          <TableColumn>Purchase Id</TableColumn>
-          <TableColumn>Total</TableColumn>
-        </TableHeader>
-        <TableBody items={purchaseData}>
-          {(item) => (
-            <TableRow key={item.purchaseId}>
-              <TableCell>{item.purchaseId}</TableCell>
-              <TableCell>${item.total}</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </>
+    <div className="h-screen container mx-auto p-7 flex flex-col gap-y-5">
+      <UpdateBudget />
+      <PurchaseHistory />
+    </div>
   );
 }

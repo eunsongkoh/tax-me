@@ -4,12 +4,18 @@ import { login, logout } from "@/app/lib/features/user/userSlice";
 export function useLogUser() {
   const dispatch = useAppDispatch();
 
-  const loginUser = (id: number, purchases: [], userName: string) => {
+  const loginUser = (
+    id: number,
+    purchases: [],
+    userName: string,
+    budget: number
+  ) => {
     console.log("The ID: " + id);
     const userData = {
       userId: id,
       purchases: purchases,
       userName: userName,
+      budget: budget,
     };
 
     dispatch(login(userData));

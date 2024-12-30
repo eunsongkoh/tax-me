@@ -4,17 +4,19 @@ import {
   useClearItems,
   useModifyQuant,
   useRemoveItem,
-} from "@/utils/ModifyItems";
+} from "@/utils/modifyItems";
+
+import { useUpdatePurchases } from "@/utils/purchases";
 import { Button } from "@nextui-org/button";
 
 export default function ReceiptList() {
   const { clearAllItems } = useClearItems();
   const { removeCurrentItem } = useRemoveItem();
   const { incQuant, decQuant } = useModifyQuant();
+  const { updPurchases } = useUpdatePurchases();
   const items = useAppSelector((state) => state.items.items);
   const userId = useAppSelector((state) => state.user.userId);
   const userData = useAppSelector((state) => state.user);
-  console.log(userData);
 
   const total = items.reduce((accumulator, item) => {
     const taxMultiplier = item.taxRate / 100;
@@ -105,6 +107,8 @@ export default function ReceiptList() {
         console.log(result);
 
         // clear the cart
+        console.log(result.data.purchases);
+        updPurchases(result.data.purchases);
         clearAllItems();
       } else {
         const error = await response.json();
@@ -129,7 +133,12 @@ export default function ReceiptList() {
         <div className="text-right mb-1">
           <p>Total: ${total.toFixed(2)}</p>
         </div>
-        <Button onPress={checkout}>Checkout</Button>
+        <Button
+          onPress={checkout}
+          className="transition-transform bg-gradient-to-r from-green-500 to-green-900"
+        >
+          Checkout
+        </Button>
       </div>
     </>
   );
