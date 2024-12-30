@@ -1,13 +1,15 @@
 "use client";
 import { useLogUser } from "@/utils/login";
-import { Form, Input, Button } from "@nextui-org/react";
-import { Accordion, AccordionItem } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  Form,
+  Input,
+} from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 
 export default function SignIn() {
-  const [action, setAction] = useState(null);
   const { loginUser, logoutUser } = useLogUser();
   const router = useRouter();
 
@@ -45,7 +47,7 @@ export default function SignIn() {
           const result = await response.json();
 
           // enable the user login state
-          loginUser(result.data.userId, result.data.purchases);
+          loginUser(result.data.userId, result.data.purchases, username);
 
           router.push("/receipt");
         } else {
@@ -87,7 +89,7 @@ export default function SignIn() {
           console.log(result);
 
           // enable the user login state
-          loginUser(result.data.userId, result.data.purchases);
+          loginUser(result.data.userId, result.data.purchases, username);
 
           router.push("/receipt");
         } else {

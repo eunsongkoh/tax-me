@@ -1,6 +1,4 @@
 import { NewItem } from "@/models/NewItem";
-import { ItemType } from "@/types/ItemType";
-import { TaxRates } from "@/types/TaxRate";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ItemState {
@@ -44,14 +42,33 @@ const itemSlice = createSlice({
     incrementId: (state) => {
       state.itemId += 1;
     },
+    decrementQuant: (state, action: PayloadAction<number>) => {
+      const item = state.items.find((item) => item.id === action.payload);
+      if (item && item.quantity > 0) {
+        item.quantity -= 1;
+      }
+    },
+    incrementQuant: (state, action: PayloadAction<number>) => {
+      const item = state.items.find((item) => item.id === action.payload);
+      if (item) {
+        item.quantity += 1;
+      }
+    },
     clearItems: (state) => {
       return {
         ...state,
-        items: [], 
+        items: [],
       };
     },
   },
 });
 
-export const { addItem, removeItem, incrementId, clearItems } = itemSlice.actions;
+export const {
+  addItem,
+  removeItem,
+  incrementId,
+  incrementQuant,
+  decrementQuant,
+  clearItems,
+} = itemSlice.actions;
 export default itemSlice.reducer;

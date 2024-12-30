@@ -4,6 +4,8 @@ import { useAppDispatch } from "@/app/hooks";
 import {
   addItem,
   clearItems,
+  decrementQuant,
+  incrementQuant,
   removeItem,
 } from "@/app/lib/features/items/itemSlice";
 
@@ -43,7 +45,25 @@ export function useClearItems() {
   return { clearAllItems };
 }
 
-export function RemoveItem(_id: number) {
+export function useRemoveItem() {
   const dispatch = useAppDispatch();
-  dispatch(removeItem(_id));
+  const removeCurrentItem = (_id: number) => {
+    dispatch(removeItem(_id));
+  };
+
+  return { removeCurrentItem };
+}
+
+export function useModifyQuant() {
+  const dispatch = useAppDispatch();
+
+  const incQuant = (_id: number) => {
+    dispatch(incrementQuant(_id));
+  };
+
+  const decQuant = (_id: number) => {
+    dispatch(decrementQuant(_id));
+  };
+
+  return { incQuant, decQuant };
 }

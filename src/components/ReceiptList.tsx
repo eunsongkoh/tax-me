@@ -1,10 +1,16 @@
 "use client";
 import { useAppSelector } from "@/app/hooks";
-import { useClearItems } from "@/utils/ModifyItems";
+import {
+  useClearItems,
+  useModifyQuant,
+  useRemoveItem,
+} from "@/utils/ModifyItems";
 import { Button } from "@nextui-org/button";
 
 export default function ReceiptList() {
   const { clearAllItems } = useClearItems();
+  const { removeCurrentItem } = useRemoveItem();
+  const { incQuant, decQuant } = useModifyQuant();
   const items = useAppSelector((state) => state.items.items);
   const userId = useAppSelector((state) => state.user.userId);
   const userData = useAppSelector((state) => state.user);
@@ -21,10 +27,35 @@ export default function ReceiptList() {
     const itemTotal = (item.price + item.price * taxMultiplier) * item.quantity;
 
     return (
-      <div className="columns-3" key={item.id}>
+      <div className="columns-4" key={item.id}>
         <div>{item.obj_name}</div>
-        <div>{item.quantity}</div>
+        <div className="flex items-center justify-center">
+          <Button
+            onPress={() => {
+              decQuant(item.id);
+            }}
+            variant="light"
+          >
+            -
+          </Button>
+          <div>{item.quantity}</div>
+          <Button
+            onPress={() => {
+              incQuant(item.id);
+            }}
+            variant="light"
+          >
+            +
+          </Button>
+        </div>
         <div>${itemTotal.toFixed(2)}</div>
+        <Button
+          onPress={() => {
+            removeCurrentItem(item.id);
+          }}
+        >
+          Delete
+        </Button>
       </div>
     );
   });
@@ -77,7 +108,7 @@ export default function ReceiptList() {
 
   return (
     <>
-      <div className="columns-3">
+      <div className="columns-4">
         <h1>Item Name</h1>
         <h1>Quantity</h1>
         <h1>Price</h1>

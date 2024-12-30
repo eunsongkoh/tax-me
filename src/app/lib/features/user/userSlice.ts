@@ -4,6 +4,7 @@ const initialState = {
   loggedIn: false,
   userId: null,
   purchases: [],
+  userName: "",
 };
 
 const userSlice = createSlice({
@@ -14,15 +15,14 @@ const userSlice = createSlice({
       state.loggedIn = true;
       state.userId = action.payload.userId;
       state.purchases = action.payload.purchases;
+      state.userName = action.payload.userName;
     },
     logout: (state) => {
       state.loggedIn = false;
       state.userId = null;
       state.purchases = [];
+      state.userName = "";
     },
-    // addPurchase: (state, action) => {
-    //   state.purchases.push(action.payload);
-    // },
   },
 });
 
