@@ -27,29 +27,38 @@ export default function ReceiptList() {
     const itemTotal = (item.price + item.price * taxMultiplier) * item.quantity;
 
     return (
-      <div className="columns-4" key={item.id}>
-        <div>{item.obj_name}</div>
-        <div className="flex items-center justify-center">
+      <div className="grid grid-cols-5 justify-stretch my-2" key={item.id}>
+        <div className="flex items-center">
+          <p>{item.obj_name}</p>
+        </div>
+        <div className="flex items-center col-span-2">
           <Button
+            size="sm"
             onPress={() => {
               decQuant(item.id);
             }}
             variant="light"
+            color="danger"
           >
             -
           </Button>
           <div>{item.quantity}</div>
           <Button
+            size="sm"
             onPress={() => {
               incQuant(item.id);
             }}
             variant="light"
+            color="success"
           >
             +
           </Button>
         </div>
-        <div>${itemTotal.toFixed(2)}</div>
+        <div className="flex items-center">
+          <p>${itemTotal.toFixed(2)}</p>
+        </div>
         <Button
+          size="sm"
           onPress={() => {
             removeCurrentItem(item.id);
           }}
@@ -108,14 +117,20 @@ export default function ReceiptList() {
 
   return (
     <>
-      <div className="columns-4">
-        <h1>Item Name</h1>
-        <h1>Quantity</h1>
-        <h1>Price</h1>
+      <div className="flex flex-col h-full mt-2">
+        <div className="grid grid-cols-5 justify-evenly">
+          <p className="font-bold">Item</p>
+          <p className="col-span-2 text-center font-bold">Quantity</p>
+          <p className="text-left font-bold">Price</p>
+        </div>
+        <div>{renderedItems}</div>
       </div>
-      <div className="">{renderedItems}</div>
-      <div>Total: ${total.toFixed(2)}</div>
-      <Button onPress={checkout}>Checkout</Button>
+      <div className="flex flex-col items-end mt-auto mb-5">
+        <div className="text-right mb-1">
+          <p>Total: ${total.toFixed(2)}</p>
+        </div>
+        <Button onPress={checkout}>Checkout</Button>
+      </div>
     </>
   );
 }

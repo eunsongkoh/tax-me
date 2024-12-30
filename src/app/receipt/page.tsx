@@ -7,7 +7,7 @@ import ReceiptList from "@/components/ReceiptList";
 export default function Receipt() {
   return (
     <>
-      <div className="container mx-auto border-2">
+      <div className="h-screen container mx-auto px-3 flex flex-col">
         <AddItem />
         <ReceiptList />
       </div>
