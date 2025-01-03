@@ -5,9 +5,21 @@ import { Progress } from "@nextui-org/react";
 
 export default function BudgetProgress() {
   const purchaseData: any[] = useAppSelector((state) => state.user.purchases);
-  let budget = useAppSelector((state) => state.user.budget);
+  const budget = useAppSelector((state) => state.user.budget);
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = currentDate.getFullYear();
+
+  const currentMonthPurchases = purchaseData.filter((item) => {
+    const [year, month] = item.date.split("-");
+    console.log(parseInt(month), currentMonth);
+
+    return parseInt(month) === currentMonth && parseInt(year) === currentYear;
+  });
+
   const totalBudget = budget ? budget : 0;
-  const total = purchaseData.reduce((accumulator, item) => {
+  const total = currentMonthPurchases.reduce((accumulator, item) => {
     return accumulator + item.total;
   }, 0);
 

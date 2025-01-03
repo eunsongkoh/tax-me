@@ -2,20 +2,62 @@
 import { useAppSelector } from "@/app/hooks";
 import { Input } from "@nextui-org/react";
 import BudgetProgress from "./BudgetProgress";
+import { useUpdateBudget } from "@/utils/updateBudget";
+import { useState } from "react";
 export default function UpdateBudget() {
   const userData = useAppSelector((state) => state.user);
+  const { updBudget } = useUpdateBudget();
+  const [currBudgetVal, setCurrBudgetVal] = useState(userData.budget || 0.0);
 
-  const changeBudget = () => {
-    // make a call here for state change
-    console.log("hi");
+  const valChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrBudgetVal(parseFloat(e.target.value));
   };
+
+  const changeBudget = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // make a call here for state change
+    console.log("Budgethas been changed");
+    console.log(parseFloat(e.target.value), currBudgetVal);
+    if (parseFloat(e.target.value) == userData.budget) {
+      return;
+    }
+    setCurrBudgetVal(parseFloat(e.target.value));
+    try {
+      const body = {
+        userId: userData.userId,
+        budget: currBudgetVal,
+      };
+
+      console.log("Making a Call to the Checkout API", body);
+
+      const response = await fetch("/api/budget", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+
+        // clear the cart
+        updBudget(currBudgetVal);
+      } else {
+        const error = await response.json();
+        console.log(error.errorMessage || "Failed Creating a New Purchase");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
+
   return (
     <>
       <p className="font-bold text-2xl pb-5">
         Welcome <span className="underline">{userData.userName}</span>
       </p>
-      <p className="text-xl pt-2">Your Current Budget</p>
-      {/* <p className="font-sm text-default-600">Change Budget</p> */}
+      <p className="text-xl pt-2">Your Budget this Month</p>
       <BudgetProgress />
       <Input
         endContent={
@@ -25,9 +67,11 @@ export default function UpdateBudget() {
         }
         label=""
         labelPlacement="outside"
-        placeholder={userData.budget ? userData.budget : "0.00"}
+        placeholder={userData.budget ? userData.budget.toString() : "0.00"}
         type="number"
-        onChange={changeBudget}
+        onChange={valChange}
+        onBlur={changeBudget}
+        value={currBudgetVal.toString()}
         className="py-2"
       />
     </>

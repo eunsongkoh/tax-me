@@ -73,6 +73,7 @@ export default function ReceiptList() {
 
   const totalItems: { price: string; itemName: string }[] = [];
   const checkout = async () => {
+    if (userId == null) return;
     // need to collect all the items and put them all together
     for (const item of items) {
       const tempItem = {
@@ -133,13 +134,15 @@ export default function ReceiptList() {
         <div className="text-right mb-1">
           <p className="text-lg">Total: ${total.toFixed(2)}</p>
         </div>
-        <Button
-          onPress={checkout}
-          className="transition-transform bg-gradient-to-r from-green-500 to-green-900"
-          variant="shadow"
-        >
-          Checkout
-        </Button>
+        {userId && (
+          <Button
+            onPress={checkout}
+            className="transition-transform bg-gradient-to-r from-green-500 to-green-900"
+            variant="shadow"
+          >
+            Checkout
+          </Button>
+        )}
       </div>
     </>
   );
