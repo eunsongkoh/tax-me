@@ -17,7 +17,6 @@ export default async function handler(
 
     const hf = new HfInference(token);
     const { conversation, items } = req.body;
-    console.log(conversation);
     const totalItems = [];
 
     for (const i of items) {
@@ -29,7 +28,6 @@ export default async function handler(
     )}. This recipe should be simple since there may be times where the items are difficult to recognize.`;
 
     try {
-      console.log(startedConvo);
       const prompt = startedConvo
         ? conversation
             .filter(

@@ -70,8 +70,6 @@ export default function SignIn() {
           router.push("/receipt");
         } else {
           const error = await response.json();
-          console.log(error);
-          console.log(response);
           if (response.status == 420) {
             // same username
             showAlert("This username is already taken", "secondary");
@@ -79,9 +77,9 @@ export default function SignIn() {
             // same email
             showAlert("This email is already in use", "secondary");
           } else {
-            console.log(error.errorMessage || "Signup Failed");
+            console.error(error.errorMessage || "Signup Failed");
           }
-          console.log(error.errorMessage || "Signup Failed");
+          console.error(error.errorMessage || "Signup Failed");
         }
       } catch (error) {
         console.error("Error: ", error);
@@ -115,15 +113,14 @@ export default function SignIn() {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(result);
 
           // enable the user login state
-          loginUser(result.data.userId, result.data.purchases, username);
+          loginUser(result.data.userId, result.data.purchases, username, result.data.budget);
 
           router.push("/receipt");
         } else {
           const error = await response.json();
-          console.log(error.errorMessage || "Signup Failed");
+          console.error(error.errorMessage || "Signup Failed");
         }
       } catch (error) {
         console.error("Error: ", error);

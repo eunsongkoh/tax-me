@@ -8,24 +8,7 @@ interface ItemState {
 
 const initialState: ItemState = {
   items: ([] = [
-    // {
-    //   price: 3.2,
-    //   obj_name: "cheese",
-    //   quantity: 4,
-    //   itemType: ItemType.Produce,
-    //   taxRate: 1 as keyof typeof TaxRates,
-    //   id: 1234,
-    // },
-    // {
-    //   price: 5.2,
-    //   obj_name: "cheetos",
-    //   quantity: 2,
-    //   itemType: ItemType["Carbonated drinks, candies, snack foods"],
-    //   taxRate: 1 as keyof typeof TaxRates,
-    //   id: 2345,
-    // },
   ]),
-  // should change this to whatever our API returns
   itemId: 0,
 };
 

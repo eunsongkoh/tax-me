@@ -11,7 +11,6 @@ import {
 
 export default function PurchaseHistory() {
   const purchaseData: any[] = useAppSelector((state) => state.user.purchases);
-  console.log(purchaseData);
   return (
     <>
       <p className="text-bold py-2 text-xl">Your Past Purchases</p>

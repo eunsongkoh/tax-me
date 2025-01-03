@@ -26,7 +26,6 @@ const userSlice = createSlice({
       state.userName = "";
     },
     updatePurchases: (state, action) => {
-      console.log(action.payload.purchases);
       state.purchases = action.payload.purchases;
     },
     updateBudget: (state, action) => {

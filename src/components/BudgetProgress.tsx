@@ -13,7 +13,6 @@ export default function BudgetProgress() {
 
   const currentMonthPurchases = purchaseData.filter((item) => {
     const [year, month] = item.date.split("-");
-    console.log(parseInt(month), currentMonth);
 
     return parseInt(month) === currentMonth && parseInt(year) === currentYear;
   });

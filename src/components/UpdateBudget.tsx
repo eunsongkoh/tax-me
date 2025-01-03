@@ -15,8 +15,6 @@ export default function UpdateBudget() {
 
   const changeBudget = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // make a call here for state change
-    console.log("Budgethas been changed");
-    console.log(parseFloat(e.target.value), currBudgetVal);
     if (parseFloat(e.target.value) == userData.budget) {
       return;
     }
@@ -27,8 +25,6 @@ export default function UpdateBudget() {
         budget: currBudgetVal,
       };
 
-      console.log("Making a Call to the Checkout API", body);
-
       const response = await fetch("/api/budget", {
         method: "PUT",
         headers: {
@@ -38,14 +34,10 @@ export default function UpdateBudget() {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-
-        // clear the cart
         updBudget(currBudgetVal);
       } else {
         const error = await response.json();
-        console.log(error.errorMessage || "Failed Creating a New Purchase");
+        console.error(error.errorMessage || "Failed Creating a New Purchase");
       }
     } catch (error) {
       console.error("Error: ", error);

@@ -93,7 +93,6 @@ export default function ReceiptList() {
         total: parseFloat(total.toFixed(2)),
       };
 
-      console.log("Making a Call to the Checkout API", checkoutRq);
 
       const response = await fetch("/api/checkout", {
         method: "POST",
@@ -105,15 +104,13 @@ export default function ReceiptList() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
 
         // clear the cart
-        console.log(result.data.purchases);
         updPurchases(result.data.purchases);
         clearAllItems();
       } else {
         const error = await response.json();
-        console.log(error.errorMessage || "Failed Creating a New Purchase");
+        console.error(error.errorMessage || "Failed Creating a New Purchase");
       }
     } catch (error) {
       console.error("Error: ", error);

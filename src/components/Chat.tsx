@@ -59,7 +59,6 @@ export default function Chat() {
 
     const userMessage = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
-    console.log(userMessage);
 
     try {
       setIsLoading(true);

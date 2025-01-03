@@ -1,4 +1,5 @@
 import { useAppDispatch } from "@/app/hooks";
+import { updateSessionBudget } from "@/app/lib/features/temp/budgetSlice";
 import { updateBudget } from "@/app/lib/features/user/userSlice";
 
 export function useUpdateBudget() {
@@ -12,4 +13,14 @@ export function useUpdateBudget() {
   };
 
   return { updBudget };
+}
+
+export function useUpdateSessionBudget() {
+  const dispatch = useAppDispatch();
+
+  const updSessionBudget = (newBudget: number) => {
+    dispatch(updateSessionBudget(newBudget));
+  };
+
+  return { updSessionBudget };
 }

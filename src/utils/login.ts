@@ -10,7 +10,6 @@ export function useLogUser() {
     userName: string,
     budget: number
   ) => {
-    console.log("The ID: " + id);
     const userData = {
       userId: id,
       purchases: purchases,
