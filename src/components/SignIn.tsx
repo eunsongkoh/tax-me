@@ -115,7 +115,12 @@ export default function SignIn() {
           const result = await response.json();
 
           // enable the user login state
-          loginUser(result.data.userId, result.data.purchases, username, result.data.budget);
+          loginUser(
+            result.data.userId,
+            result.data.purchases,
+            username,
+            result.data.budget
+          );
 
           router.push("/receipt");
         } else {
@@ -149,7 +154,7 @@ export default function SignIn() {
       >
         Guest Mode
       </Button>
-      <Accordion>
+      {/* <Accordion className="max-w-md">
         <AccordionItem key="1" aria-label="Log In" title="Log In">
           <Form
             className="w-full max-w-xs flex flex-col gap-4"
@@ -230,7 +235,7 @@ export default function SignIn() {
             </div>
           </Form>
         </AccordionItem>
-      </Accordion>
+      </Accordion> */}
     </>
   );
 }

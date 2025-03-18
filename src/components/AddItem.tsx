@@ -36,7 +36,11 @@ export default function AddItem() {
 
   return (
     <>
-      <Button onPress={onOpen} variant="shadow">
+      <Button
+        className="flex w-full mb-3 mx-1"
+        onPress={onOpen}
+        variant="shadow"
+      >
         Add New Item
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>

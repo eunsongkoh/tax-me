@@ -17,6 +17,7 @@ export default function ReceiptList() {
   const items = useAppSelector((state) => state.items.items);
   const userId = useAppSelector((state) => state.user.userId);
   const userData = useAppSelector((state) => state.user);
+  console.log(items);
 
   const total = items.reduce((accumulator, item) => {
     const taxMultiplier = item.taxRate / 100;
@@ -27,14 +28,16 @@ export default function ReceiptList() {
   const renderedItems = items.map((item) => {
     const taxMultiplier = item.taxRate / 100;
     const itemTotal = (item.price + item.price * taxMultiplier) * item.quantity;
+    const totalTax = itemTotal - item.price * item.quantity;
 
     return (
       <div className="grid grid-cols-5 justify-stretch my-2" key={item.id}>
-        <div className="flex items-center">
+        <div className="flex items-center col-span-1">
           <p>{item.obj_name}</p>
         </div>
-        <div className="flex items-center col-span-2">
+        <div className="flex items-center col-span-1">
           <Button
+            isIconOnly
             size="sm"
             onPress={() => {
               decQuant(item.id);
@@ -46,6 +49,7 @@ export default function ReceiptList() {
           </Button>
           <div>{item.quantity}</div>
           <Button
+            isIconOnly
             size="sm"
             onPress={() => {
               incQuant(item.id);
@@ -58,6 +62,9 @@ export default function ReceiptList() {
         </div>
         <div className="flex items-center">
           <p>${itemTotal.toFixed(2)}</p>
+        </div>
+        <div className="flex items-center">
+          <p>${totalTax.toFixed(2)}</p>
         </div>
         <Button
           size="sm"
@@ -93,7 +100,6 @@ export default function ReceiptList() {
         total: parseFloat(total.toFixed(2)),
       };
 
-
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -119,11 +125,12 @@ export default function ReceiptList() {
 
   return (
     <>
-      <div className="flex flex-col h-full mt-2">
+      <div className="flex flex-col h-full mt-2 mx-2">
         <div className="grid grid-cols-5 justify-evenly">
-          <p className="font-bold">Item</p>
-          <p className="col-span-2 text-center font-bold">Quantity</p>
+          <p className="font-bold col-span-1">Item</p>
+          <p className="col-span-1 text-left font-bold">Quantity</p>
           <p className="text-left font-bold">Price</p>
+          <p className="text-left font-bold">Total Tax</p>
         </div>
         <div>{renderedItems}</div>
       </div>
