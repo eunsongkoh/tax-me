@@ -7,7 +7,7 @@ import {
 } from "@/utils/modifyItems";
 
 import { useUpdatePurchases } from "@/utils/purchases";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 export default function ReceiptList() {
   const { clearAllItems } = useClearItems();

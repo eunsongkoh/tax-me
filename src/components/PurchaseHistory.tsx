@@ -7,7 +7,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 export default function PurchaseHistory() {
   const purchaseData: any[] = useAppSelector((state) => state.user.purchases);

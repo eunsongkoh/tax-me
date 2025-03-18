@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/app/hooks";
-import { Progress } from "@nextui-org/react";
+import { Progress } from "@heroui/react";
 
 export default function BudgetProgress() {
   const purchaseData: any[] = useAppSelector((state) => state.user.purchases);

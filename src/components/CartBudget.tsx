@@ -1,4 +1,4 @@
-import { Input, Progress } from "@nextui-org/react";
+import { Input, Progress } from "@heroui/react";
 import { useAppSelector } from "@/app/hooks";
 import { useUpdateSessionBudget } from "@/utils/updateBudget";
 import { useState } from "react";

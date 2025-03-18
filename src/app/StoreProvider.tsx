@@ -5,7 +5,7 @@ import { makeStore, AppStore, persistor } from "./lib/store";
 import { initializeItemCount } from "./lib/features/counter/counterSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 
 const store = makeStore();
 persistStore(store);

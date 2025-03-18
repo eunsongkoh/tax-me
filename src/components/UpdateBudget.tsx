@@ -1,6 +1,6 @@
 "use client";
 import { useAppSelector } from "@/app/hooks";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import BudgetProgress from "./BudgetProgress";
 import { useUpdateBudget } from "@/utils/updateBudget";
 import { useState } from "react";
