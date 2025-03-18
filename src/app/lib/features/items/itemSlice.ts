@@ -7,8 +7,7 @@ interface ItemState {
 }
 
 const initialState: ItemState = {
-  items: ([] = [
-  ]),
+  items: ([] = []),
   itemId: 0,
 };
 

@@ -26,7 +26,6 @@ export default function BudgetProgress() {
     <>
       <Progress
         classNames={{
-          base: "max-w-md",
           track: "drop-shadow-md border border-default",
           indicator: "bg-gradient-to-r from-green-500 to-pink-500",
           label: "tracking-wider font-medium text-default-600",

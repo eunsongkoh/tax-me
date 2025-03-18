@@ -34,7 +34,6 @@ export default function CartBudget() {
       <div className="flex flex-col p-1 mb-3">
         <Progress
           classNames={{
-            base: "max-w-md",
             track: "drop-shadow-md border border-default",
             indicator: "bg-gradient-to-r from-green-500 to-red-700",
             label: "tracking-wider font-medium text-default-600 text-right",

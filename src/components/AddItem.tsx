@@ -3,51 +3,24 @@ import { useAddItem } from "@/utils/modifyItems";
 import {
   Button,
   Form,
-  Image,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
-  Select,
   SelectItem,
+  Select,
   useDisclosure,
 } from "@heroui/react";
-import { useState } from "react";
-import Webcam from "react-webcam";
+
+import { itemTypes } from "@/models/ItemTypes";
 
 export default function AddItem() {
   const { addNewItem } = useAddItem();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const {
-    isOpen: isPhotoOpen,
-    onOpen: onPhotoOpen,
-    onOpenChange: onPhotoChange,
-  } = useDisclosure();
-
-  const [photo, setPhoto] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-
-  // temp, get rid of later once implemented API
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageFile(file);
-        setPhoto(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleCapture = (getScreenshot: () => string | null) => {
-    const imageSrc = getScreenshot();
-    setPhoto(imageSrc);
-  };
 
   // on form submit
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -66,7 +39,7 @@ export default function AddItem() {
       <Button onPress={onOpen} variant="shadow">
         Add New Item
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -74,45 +47,8 @@ export default function AddItem() {
                 Add Item
               </ModalHeader>
               <ModalBody>
-                <Button onPress={onPhotoChange}>
-                  {isPhotoOpen ? "Cancel Photo" : "Take a Photo"}
-                </Button>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  label="Upload an Image"
-                  onChange={handleImageUpload}
-                />
-                {isPhotoOpen && (
-                  <Webcam
-                    audio={false}
-                    screenshotFormat="image/jpeg"
-                    width="100%"
-                    videoConstraints={{
-                      facingMode: "user",
-                    }}
-                  >
-                    {({ getScreenshot }) => (
-                      <div>
-                        <Button onPress={() => handleCapture(getScreenshot)}>
-                          Capture Photo
-                        </Button>
-                      </div>
-                    )}
-                  </Webcam>
-                )}
-
-                {photo && (
-                  <div>
-                    <Image
-                      src={photo}
-                      alt="Captured Photo"
-                      style={{ width: "100%", maxWidth: "400px" }}
-                    />
-                  </div>
-                )}
                 <Form
-                  className="w-full max-w-xs flex flex-col gap-4"
+                  className="w-full flex flex-col gap-4"
                   validationBehavior="native"
                   onSubmit={onSubmit}
                 >
@@ -125,15 +61,13 @@ export default function AddItem() {
                   />
                   <Select
                     className="max-w-xs"
-                    label="Select an Item Type"
                     name="itemType"
+                    label="Select an Item Type"
+                    placeholder="Select a type"
                   >
-                    <SelectItem key="1">Produce</SelectItem>
-                    <SelectItem key="2">Alcoholic Beverages</SelectItem>
-                    <SelectItem key="3">
-                      Carbonated drinks, candies, snack foods
-                    </SelectItem>
-                    <SelectItem key="4">Prepared Foods</SelectItem>
+                    {itemTypes.map((item) => (
+                      <SelectItem key={item.key}>{item.label}</SelectItem>
+                    ))}
                   </Select>
                   <Input
                     isRequired
@@ -142,7 +76,7 @@ export default function AddItem() {
                     name="itemName"
                     placeholder="Cheese"
                     type="text"
-                  ></Input>
+                  />
                   <Input
                     isRequired
                     errorMessage="Please Enter a Quantity"
